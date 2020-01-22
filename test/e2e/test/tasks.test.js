@@ -92,8 +92,6 @@ describe('Tasks suite', () => {
 
   describe('POST', () => {
     it('should create task successfully', async () => {
-      let taskId;
-
       await request
         .post(routes.tasks.create(testBoardId))
         .set('Accept', 'application/json')
@@ -102,15 +100,11 @@ describe('Tasks suite', () => {
         .expect('Content-Type', /json/)
         .then(res => {
           expect(res.body.id).to.be.a('string');
-          taskId = res.body.id;
           jestExpect(res.body).toMatchObject({
             ...TEST_TASK_DATA,
             boardId: testBoardId
           });
         });
-
-      // Teardown
-      await request.delete(routes.tasks.delete(testBoardId, taskId));
     });
   });
 
@@ -158,9 +152,7 @@ describe('Tasks suite', () => {
         .delete(routes.tasks.delete(testBoardId, testTaskId))
         .then(res => expect(res.status).oneOf([200, 204]));
 
-      await request
-        .get(routes.tasks.getById(testBoardId, testTaskId))
-        .expect(404);
+      await request.get(routes.tasks.getById(testTaskId)).expect(404);
     });
   });
 });
