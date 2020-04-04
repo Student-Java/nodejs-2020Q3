@@ -1,90 +1,49 @@
-const uuid = require('uuid');
 const User = require('../resources/users/user.model');
+const Board = require('../resources/boards/board.model');
+const Task = require('../resources/tasks/task.model');
 
 const db = {
   Users: [],
-  Boards: [
-    {
-      id: uuid(),
-      title: 'firstBoard',
-      columns: {
-        backlog: 'backlog',
-        toDo: 'To do',
-        inProgress: 'in progress',
-        blocked: 'blocked',
-        review: 'review',
-        done: 'done'
-      }
-    },
-    {
-      id: uuid(),
-      title: 'secondBoard',
-      columns: {
-        toDo: 'To do',
-        inProgress: 'in progress',
-        blocked: 'blocked',
-        review: 'review',
-        done: 'done'
-      }
-    }
-  ],
-  Tasks: [
-    {
-      id: uuid(),
-      title: 'firstTask',
-      order: 0,
-      description: 'firstTask description',
-      userId: 2,
-      boardId: 4,
-      columnId: 'inProgress'
-    },
-    {
-      id: uuid(),
-      title: 'secondTask',
-      order: 1,
-      description: 'secondTask description',
-      userId: 2,
-      boardId: 4,
-      columnId: 'blocked'
-    },
-    {
-      id: uuid(),
-      title: 'thirdTask',
-      order: 3,
-      description: 'thirdTask description',
-      userId: 1,
-      boardId: 4,
-      columnId: 'review'
-    }
-  ],
+  Boards: [],
+  Tasks: [],
   fixUsersStructure: user => {
     if (user) {
-      db.Tasks.forEach(task => {
-        task.userId = task.userId === user ? null : task.userId;
+      db.Tasks.filter(task => task).forEach(task => {
+        task.userId = task.userId === user.id ? null : task.userId;
       });
     }
   },
   fixBoardsStructure: board => {
     if (board) {
-      console.log('');
+      db.Tasks.filter(task => task && task.boardId === board.id).forEach(
+        task => (db.Tasks[db.Tasks.indexOf(task)] = undefined)
+      );
     }
   },
   fixTasksStructure: () => {}
 };
 
-// init DB
+// init DB with mock data
 (() => {
   for (let i = 0; i < 3; i++) {
     db.Users.push(new User());
   }
+  const board = new Board();
+  db.Boards.push(board);
+  db.Tasks.push(
+    new Task({ boardId: board.id }),
+    new Task({ boardId: board.id })
+  );
 })();
 
 const getAllEntities = tableName => {
-  return db[tableName];
+  return db[tableName].filter(entity => entity);
 };
 
 const getEntity = (tableName, id) => {
-  const entities = db[tableName].filter(entity => entity.id === id);
+  const entities = db[tableName]
+    .filter(entity => entity)
+    .filter(entity => entity.id === id);
 
   if (entities.length > 1) {
     console.error(
