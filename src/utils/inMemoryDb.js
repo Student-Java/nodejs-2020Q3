@@ -57,13 +57,19 @@ const db = {
       columnId: 'review'
     }
   ],
-  fixUsersStructure: entity => {
-    if (entity) {
+  fixUsersStructure: user => {
+    if (user) {
       db.Tasks.forEach(task => {
-        task.userId = task.userId === entity ? null : task.userId;
+        task.userId = task.userId === user ? null : task.userId;
       });
     }
-  }
+  },
+  fixBoardsStructure: board => {
+    if (board) {
+      console.log('');
+    }
+  },
+  fixTasksStructure: () => {}
 };
 
 // init DB
@@ -78,16 +84,16 @@ const getAllEntities = tableName => {
 };
 
 const getEntity = (tableName, id) => {
-  const users = db[tableName].filter(user => user.id === id);
+  const entities = db[tableName].filter(entity => entity.id === id);
 
-  if (users.length > 1) {
+  if (entities.length > 1) {
     console.error(
-      `The DB data is damaged. Table: ${tableName}. User ID: ${id}`
+      `The DB data is damaged. Table: ${tableName}. Entity ID: ${id}`
     );
     throw Error('The DB data is wrong!');
   }
 
-  return users[0];
+  return entities[0];
 };
 
 const removeEntity = (tableName, id) => {
@@ -112,13 +118,10 @@ const saveEntity = (tableName, entity) => {
   return getEntity(tableName, entity.id);
 };
 
-const updateEntity = async (tableName, id, user) => {
-  const oldUser = getEntity(tableName, id);
-  if (oldUser) {
-    db[tableName][db[tableName].indexOf(oldUser)] = new User({
-      id: oldUser.id,
-      ...user
-    });
+const updateEntity = async (tableName, id, entity) => {
+  const oldEntity = getEntity(tableName, id);
+  if (oldEntity) {
+    db[tableName][db[tableName].indexOf(oldEntity)] = { ...entity };
   }
 
   return getEntity(tableName, id);
