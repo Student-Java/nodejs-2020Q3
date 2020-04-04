@@ -26,14 +26,17 @@ router.route('/:id').delete(
 
 router.route('/').post(
   wrapAsync(async (req, res) => {
-    const user = await userService.save(req.body);
+    const user = await userService.save(User.fromRequest(req.body));
     res.status(200).send(User.toResponse(user));
   })
 );
 
 router.route('/:id').put(
   wrapAsync(async (req, res) => {
-    const user = await userService.update(req.params.id, req.body);
+    const user = await userService.update(
+      req.params.id,
+      User.fromRequest(req.body)
+    );
     res.status(200).send(User.toResponse(user));
   })
 );
