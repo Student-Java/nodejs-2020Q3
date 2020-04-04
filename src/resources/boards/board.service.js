@@ -6,9 +6,7 @@ const get = id => boardsRepo.get(id);
 
 const remove = id => boardsRepo.remove(id);
 
-const save = board => {
-  return boardsRepo.save(board);
-};
+const save = board => boardsRepo.save(board);
 
 const update = board => boardsRepo.update(board.id, board);
 
