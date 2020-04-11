@@ -6,34 +6,34 @@ const { combine, timestamp, prettyPrint } = winston.format;
 morgan.token('body', req => JSON.stringify(req.body));
 morgan.token('query', req => JSON.stringify(req.query));
 
+const format = combine(timestamp(), prettyPrint());
 const options = {
   fileUnhandled: {
-    format: combine(timestamp(), prettyPrint()),
-    level: 'info',
+    format,
+    level: 'error',
     filename: `${LOGS_DIR}/exceptions.log`,
     handleExceptions: true,
     json: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 1024 * 5000,
     maxFiles: 5,
     colorize: false
   },
   fileError: {
-    format: combine(timestamp(), prettyPrint()),
+    format,
     level: 'error',
     filename: `${LOGS_DIR}/errors.log`,
-    handleExceptions: true,
     json: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 1024 * 5000,
     maxFiles: 5,
     colorize: false
   },
   fileInfo: {
-    format: combine(timestamp(), prettyPrint()),
+    format,
     level: 'info',
     filename: `${LOGS_DIR}/app.log`,
     handleExceptions: true,
     json: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 1024 * 5000,
     maxFiles: 5,
     colorize: false
   }
@@ -45,7 +45,7 @@ const logger = winston.createLogger({
     new winston.transports.File(options.fileInfo)
   ],
   exceptionHandlers: [new winston.transports.File(options.fileUnhandled)],
-  exitOnError: false // do not exit on handled exceptions
+  exitOnError: true
 });
 
 if (process.env.NODE_ENV === 'development') {
