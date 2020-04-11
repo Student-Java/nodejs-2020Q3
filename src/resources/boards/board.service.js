@@ -8,6 +8,6 @@ const remove = id => boardsRepo.remove(id);
 
 const save = board => boardsRepo.save(board);
 
-const update = board => boardsRepo.update(board.id, board);
+const update = board => boardsRepo.update(board);
 
 module.exports = { getAll, get, remove, save, update };
