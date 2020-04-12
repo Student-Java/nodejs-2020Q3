@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Board = require('./board.model');
 const boardService = require('./board.service');
 const wrapAsync = require('../../utils/wrapAsync');
-const { id } = require('../../utils/validation/shemas');
+const { id } = require('../../utils/validation/sсhemas');
 const validator = require('../../utils/validation/validator');
 
 router.get(

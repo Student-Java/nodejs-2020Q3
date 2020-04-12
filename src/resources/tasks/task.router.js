@@ -3,7 +3,7 @@ const router = require('express').Router({ mergeParams: true });
 const Task = require('./task.model');
 const boardService = require('./task.service');
 const wrapAsync = require('../../utils/wrapAsync');
-const { taskId } = require('../../utils/validation/shemas');
+const { taskId } = require('../../utils/validation/sсhemas');
 const validator = require('../../utils/validation/validator');
 
 router.get(

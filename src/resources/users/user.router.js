@@ -3,7 +3,7 @@ const router = require('express').Router();
 const User = require('./user.model');
 const userService = require('./user.service');
 const wrapAsync = require('../../utils/wrapAsync');
-const { id, user } = require('../../utils/validation/shemas');
+const { id, user } = require('../../utils/validation/sсhemas');
 const validator = require('../../utils/validation/validator');
 
 router.get(
