@@ -1,43 +1,56 @@
+const { OK, NO_CONTENT } = require('http-status-codes');
 const router = require('express').Router();
 const User = require('./user.model');
 const userService = require('./user.service');
 const wrapAsync = require('../../utils/wrapAsync');
+const { id, user } = require('../../utils/validation/shemas');
+const validator = require('../../utils/validation/validator');
 
-router.route('/').get(
+router.get(
+  '/',
   wrapAsync(async (req, res) => {
     const users = await userService.getAll();
-    await res.json(users.map(User.toResponse));
+    await res.status(OK).json(users.map(User.toResponse));
   })
 );
 
-router.route('/:id').get(
+router.get(
+  '/:id',
+  validator(id, 'params'),
   wrapAsync(async (req, res) => {
-    const user = await userService.get(req.params.id);
-    res.status(200).send(User.toResponse(user));
+    const userEntity = await userService.get(req.params.id);
+    res.status(OK).send(User.toResponse(userEntity));
   })
 );
 
-router.route('/:id').delete(
+router.delete(
+  '/:id',
+  validator(id, 'params'),
   wrapAsync(async (req, res) => {
     await userService.remove(req.params.id);
-    res.sendStatus(200);
+    res.sendStatus(NO_CONTENT);
   })
 );
 
-router.route('/').post(
+router.post(
+  '/',
+  validator(user, 'body'),
   wrapAsync(async (req, res) => {
-    const user = await userService.save(User.fromRequest(req.body));
-    res.status(200).send(User.toResponse(user));
+    const userEntity = await userService.save(User.fromRequest(req.body));
+    res.status(OK).send(User.toResponse(userEntity));
   })
 );
 
-router.route('/:id').put(
+router.put(
+  '/:id',
+  validator(id, 'params'),
+  validator(user, 'body'),
   wrapAsync(async (req, res) => {
-    const user = await userService.update(
+    const userEntity = await userService.update(
       req.params.id,
       User.fromRequest(req.body)
     );
-    res.status(200).send(User.toResponse(user));
+    res.status(OK).send(User.toResponse(userEntity));
   })
 );
 

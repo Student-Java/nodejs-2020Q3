@@ -46,10 +46,9 @@ const getEntity = (tableName, id) => {
     .filter(entity => entity.id === id);
 
   if (entities.length > 1) {
-    console.error(
+    throw Error(
       `The DB data is damaged. Table: ${tableName}. Entity ID: ${id}`
     );
-    throw Error('The DB data is wrong!');
   }
 
   return entities[0];
