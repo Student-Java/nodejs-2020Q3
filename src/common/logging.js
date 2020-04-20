@@ -1,7 +1,7 @@
 const { LOGS_DIR } = require('./config');
 const winston = require('winston');
 const morgan = require('morgan');
-const { combine, timestamp, prettyPrint } = winston.format;
+const { combine, timestamp, prettyPrint, colorize, cli } = winston.format;
 
 morgan.token('body', req => JSON.stringify(req.body));
 morgan.token('query', req => JSON.stringify(req.query));
@@ -51,7 +51,7 @@ const logger = winston.createLogger({
 if (process.env.NODE_ENV === 'development') {
   logger.add(
     new winston.transports.Console({
-      format: winston.format.simple(),
+      format: combine(colorize(), cli()),
       handleExceptions: true,
       colorize: true
     })
