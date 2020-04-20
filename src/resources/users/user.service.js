@@ -1,4 +1,3 @@
-const User = require('./user.model');
 const usersRepo = require('./user.db.repository');
 const { updateMany } = require('../tasks/task.service');
 
@@ -11,9 +10,7 @@ const remove = async id => {
   await updateMany({ userId: id }, { userId: null });
 };
 
-const save = user => {
-  return usersRepo.save(new User(user));
-};
+const save = user => usersRepo.save(user);
 
 const update = (id, user) => usersRepo.update(id, user);
 

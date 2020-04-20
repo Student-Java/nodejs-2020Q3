@@ -4,7 +4,14 @@ const ENTITY_NAME = 'user';
 
 const getAll = async () => User.find({});
 
-const get = async id => User.findOne({ _id: id });
+const get = async id => {
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    throw new NOT_FOUND_ERROR(ENTITY_NAME, { id });
+  }
+
+  return user;
+};
 
 const save = async user => User.create(user);
 
