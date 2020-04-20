@@ -1,7 +1,8 @@
 const User = require('./user.model');
 const { NOT_FOUND_ERROR } = require('../../errors/appError');
+const ENTITY_NAME = 'user';
+
 const getAll = async () => User.find({});
-const ENTITY_NAME = 'task';
 
 const get = async id => User.findOne({ _id: id });
 

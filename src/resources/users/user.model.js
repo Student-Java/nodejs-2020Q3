@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { addMethods } = require('../../utils/toResponse');
 const Schema = mongoose.Schema;
+const { addMethods } = require('../../utils/toResponse');
 
 const User = new Schema(
   {
