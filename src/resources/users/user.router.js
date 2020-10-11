@@ -6,7 +6,7 @@ const wrapAsync = require('../../utils/wrapAsync');
 router.route('/').get(
   wrapAsync(async (req, res) => {
     const users = await userService.getAll();
-    await res.json(users.map(User.toResponse));
+    res.send(users.map(User.toResponse));
   })
 );
 

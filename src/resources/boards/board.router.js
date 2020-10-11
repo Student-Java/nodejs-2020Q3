@@ -6,7 +6,7 @@ const wrapAsync = require('../../utils/wrapAsync');
 router.route('/').get(
   wrapAsync(async (req, res) => {
     const boards = await boardService.getAll();
-    await res.json(boards);
+    res.send(boards);
   })
 );
 
