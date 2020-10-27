@@ -1,19 +1,15 @@
-const uuid = require('uuid');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const { addMethods } = require('../../utils/toResponse');
 
-class Board {
-  constructor({
-    id = uuid.v4(),
-    title = 'TITLE',
-    columns = { id: null, title: '', order: 0 }
-  } = {}) {
-    this.id = id;
-    this.title = title;
-    this.columns = columns;
-  }
+const Board = new Schema(
+  {
+    title: String,
+    columns: Array
+  },
+  { collection: 'boards' }
+);
 
-  static fromRequest(body) {
-    return new Board(body);
-  }
-}
+addMethods(Board);
 
-module.exports = Board;
+module.exports = mongoose.model('boards', Board);
