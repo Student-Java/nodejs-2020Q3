@@ -10,10 +10,12 @@ const helmet = require('helmet');
 require('express-async-errors');
 
 const winston = require('./common/logging');
+const signinRouter = require('./resources/authentication/login.router');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const errorHandler = require('./errors/errorHandler');
+const checkAuthentication = require('./resources/authentication/checkAuthentication');
 
 const app = express();
 app.disable('x-powered-by');
@@ -22,6 +24,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+app.use(checkAuthentication);
 
 if (process.env.NODE_ENV === 'development') {
   app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -43,6 +47,8 @@ app.use(
     }
   )
 );
+
+app.use('/login', signinRouter);
 
 app.use('/users', userRouter);
 

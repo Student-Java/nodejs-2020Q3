@@ -1,5 +1,5 @@
 const Board = require('./board.model');
-const { NOT_FOUND_ERROR } = require('../../errors/appError');
+const { NOT_FOUND_ERROR } = require('../../errors/appErrors');
 const ENTITY_NAME = 'board';
 
 const getAll = async () => Board.find({});

@@ -1,5 +1,5 @@
 const Task = require('./task.model');
-const { NOT_FOUND_ERROR } = require('../../errors/appError');
+const { NOT_FOUND_ERROR } = require('../../errors/appErrors');
 const ENTITY_NAME = 'task';
 
 const getAll = async boardId => Task.find({ boardId });
